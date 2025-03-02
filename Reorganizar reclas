@@ -1,0 +1,34 @@
+# Define a table to map incorrect keys to correct keys
+$KeyMap = @{
+    "Q" = "A"
+    "W" = "S"
+    "E" = "D"
+    "R" = "F"
+    "T" = "G"
+    "Y" = "H"
+    "U" = "J"
+    "I" = "K"
+    "O" = "L"
+}
+
+# Function to reassign keys
+function Reassign-Keys {
+    param (
+        [Parameter(Mandatory=$true)]
+        [string]$IncorrectKey,
+        [Parameter(Mandatory=$true)]
+        [string]$CorrectKey
+    )
+    
+    $shell = New-Object -ComObject WScript.Shell
+    $shell.SendKeys("{" + $IncorrectKey + "}")
+    Start-Sleep -Milliseconds 100
+    $shell.SendKeys("{" + $CorrectKey + "}")
+}
+
+# Loop through the key map and reassign each incorrect key
+foreach ($key in $KeyMap.Keys) {
+    Reassign-Keys -IncorrectKey $key -CorrectKey $KeyMap[$key]
+}
+
+Write-Output "Key reassignment complete."
